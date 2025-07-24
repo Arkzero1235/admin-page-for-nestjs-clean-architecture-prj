@@ -1,34 +1,60 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css'
+import HorizonalNavBar from './components/HorizonalNavBar'
+import VerticalNavBar from './components/VerticalNavBar'
+import CustomerManage from './pages/CustomerManage';
+import CategoryManage from './pages/CategoryManage';
+import ProductManage from './pages/ProductManage';
+import SaleManage from './pages/SaleManage';
+import StorageManage from './pages/StorageManage';
+import BannerManage from './pages/BannerManage';
+import OrderManage from './pages/OrderManage';
+import DashBoard from './pages/DashBoard';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const options = [0, 1, 2, 3, 4, 5, 6, 7];
+
+  const [choose, setChoose] = useState(0);
+
+  function HandleChoose(status) {
+    setChoose(status)
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className='app-container'>
+      <VerticalNavBar HandleChoose={HandleChoose} />
+
+      <div className='app-workplace'>
+
+        <div className='main-workplace'>
+          {choose === 0 && <DashBoard />}
+
+          {choose === 1 && <CustomerManage />}
+
+          {choose === 2 && <CategoryManage />}
+
+          {choose === 3 && <ProductManage />}
+
+          {choose === 4 && <SaleManage />}
+
+          {choose === 5 && <StorageManage />}
+
+          {choose === 6 && < BannerManage />}
+
+          {choose === 7 && <OrderManage />}
+        </div>
+
+        <HorizonalNavBar />
+
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+
+      <ToastContainer position="bottom-right" autoClose={1000} />
+
+    </div>
   )
 }
 
