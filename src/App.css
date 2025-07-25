@@ -28,7 +28,6 @@ li {
   display: flex;
   justify-content: left;
   align-items: center;
-  cursor: pointer;
 }
 
 li:hover {
@@ -39,6 +38,10 @@ tr,
 td {
   text-align: center;
   vertical-align: middle;
+}
+
+button {
+  cursor: url("/cursor.png"), auto;
 }
 
 @media (max-width: 576px) {

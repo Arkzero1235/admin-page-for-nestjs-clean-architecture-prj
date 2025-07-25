@@ -3,9 +3,8 @@ import '../style/cm.css'
 import axios, { all } from 'axios'
 import { toast } from 'react-toastify'
 
-const CustomerManage = () => {
+const CustomerManage = ({ RenewToken }) => {
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
-    const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVlYWQ5ZTdjLTRlODctNDMzOS1iMGEwLTAzNTE5YzM4MGM3YiIsIm5hbWUiOiJBZG1pbiAxIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUzMzY4NzkzLCJleHAiOjE3NTM2Mjc5OTN9.JZTK1GxN0xhKy3L3ArmY1E1V6JhSJY9F9ZzKX-cUq0o"
 
     const [changeCount, setChangeCount] = useState(0);
 
@@ -38,6 +37,7 @@ const CustomerManage = () => {
     }
 
     async function updateUser() {
+        const accessToken = localStorage.getItem("accessToken");
         try {
             const updateRes = await axios.patch(`${backendUrl}/user/${id}`, { username, email, address, phone }, {
                 headers: {
@@ -51,11 +51,13 @@ const CustomerManage = () => {
         } catch (error) {
             console.error(error);
             toast.error("Lỗi khi cập nhật người dùng");
-            toast.error(error.response.data.message[0]);
+            toast.error(error.response.data.message);
+            RenewToken();
         }
     }
 
     async function deleteUser(id) {
+        const accessToken = localStorage.getItem("accessToken");
         try {
             const delRes = await axios.delete(`${backendUrl}/user/${id}`, {
                 headers: {
@@ -69,11 +71,13 @@ const CustomerManage = () => {
         } catch (error) {
             console.error(error);
             toast.error("Lỗi khi xóa người dùng");
-            toast.error(error.response.data.message[0]);
+            toast.error(error.response.data.message);
+            RenewToken();
         }
     }
 
     async function getUsersData() {
+        const accessToken = localStorage.getItem("accessToken");
         try {
             const getUsersRes = await axios.get(`${backendUrl}/user`, {
                 headers: {
@@ -89,7 +93,8 @@ const CustomerManage = () => {
         } catch (error) {
             console.error(error);
             toast.error("Lỗi khi lấy danh sách người dùng");
-            toast.error(error.response.data.message[0]);
+            toast.error(error.response.data.message);
+            RenewToken();
         }
     }
 

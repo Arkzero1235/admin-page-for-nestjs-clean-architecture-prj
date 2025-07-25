@@ -3,9 +3,9 @@ import "../style/pr.css"
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
-const SaleManage = () => {
+const SaleManage = ({ RenewToken }) => {
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
-    const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVlYWQ5ZTdjLTRlODctNDMzOS1iMGEwLTAzNTE5YzM4MGM3YiIsIm5hbWUiOiJBZG1pbiAxIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUzMzY4NzkzLCJleHAiOjE3NTM2Mjc5OTN9.JZTK1GxN0xhKy3L3ArmY1E1V6JhSJY9F9ZzKX-cUq0o"
+    const accessToken = localStorage.getItem("accessToken");
 
     const [allData, setAllData] = useState([]);
     const [findName, setFindName] = useState('');
@@ -42,6 +42,7 @@ const SaleManage = () => {
             console.error(error);
             toast.error("Lỗi khi lấy danh sách sản phẩm");
             toast.error(error.response.data.message[0]);
+            RenewToken();
         }
     }
 
@@ -65,6 +66,7 @@ const SaleManage = () => {
             console.error(error);
             toast.error("Lỗi khi cập nhật khuyến mãi");
             toast.error(error.response.data.message[0]);
+            RenewToken();
         }
     }
 

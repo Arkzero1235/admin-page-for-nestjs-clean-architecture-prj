@@ -5,9 +5,8 @@ import "../style/or.css"
 import axios, { all } from 'axios'
 import { toast } from 'react-toastify'
 
-const OrderManage = () => {
+const OrderManage = ({ RenewToken }) => {
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
-    const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVlYWQ5ZTdjLTRlODctNDMzOS1iMGEwLTAzNTE5YzM4MGM3YiIsIm5hbWUiOiJBZG1pbiAxIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUzMzkxNjA0LCJleHAiOjE3NTM2NTA4MDR9.WvNpmv4qQAz30vn1RtvXpx2_-00rjWDxRxKnXhSNoeA"
     // const userId = '9ed73712-adc1-4ecc-a3b0-d78e7f015ad0'
 
     const [allData, setAllData] = useState([]);
@@ -15,6 +14,7 @@ const OrderManage = () => {
     const [orderId, setOrderId] = useState('');
 
     async function getOrderData() {
+        const accessToken = localStorage.getItem("accessToken");
         try {
             const getRes = await axios.get(`${backendUrl}/order/${userId}`, {
                 headers: {
@@ -32,11 +32,12 @@ const OrderManage = () => {
             console.error(error);
             toast.error("Lỗi khi lấy danh sách đơn hàng");
             toast.error(error.response.data.message[0]);
+            RenewToken();
         }
     }
 
     async function submitOrder() {
-        console.log(orderId);
+        const accessToken = localStorage.getItem("accessToken");
 
         try {
             const submitRes = await axios.patch(`${backendUrl}/order/${orderId}`, {}, {
@@ -51,10 +52,12 @@ const OrderManage = () => {
             console.error(error);
             toast.error("Lỗi khi xác nhận đơn hàng");
             toast.error(error.response.data.message);
+            RenewToken();
         }
     }
 
     async function cancelOrder() {
+        const accessToken = localStorage.getItem("accessToken");
         try {
             const submitRes = await axios.delete(`${backendUrl}/order/${userId}/${orderId}`, {
                 headers: {
@@ -68,6 +71,7 @@ const OrderManage = () => {
             console.error(error);
             toast.error("Lỗi khi hủy đơn hàng");
             toast.error(error.response.data.message);
+            RenewToken();
         }
     }
 

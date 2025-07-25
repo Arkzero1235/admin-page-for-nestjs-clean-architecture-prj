@@ -5,10 +5,10 @@ import "../style/pr.css"
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
-const BannerManage = () => {
+const BannerManage = ({ RenewToken }) => {
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
-    const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVlYWQ5ZTdjLTRlODctNDMzOS1iMGEwLTAzNTE5YzM4MGM3YiIsIm5hbWUiOiJBZG1pbiAxIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUzMzg1NTQxLCJleHAiOjE3NTM2NDQ3NDF9.EEuWKK9biCyss-aNtEaRTSyVQwPFvkKfQSRRWM1KZs4"
-    const adminId = 'eead9e7c-4e87-4339-b0a0-03519c380c7b'
+    const accessToken = localStorage.getItem("accessToken");
+    const adminId = localStorage.getItem("adminId");
 
     const [allData, setAllData] = useState([]);
     const [findName, setFindName] = useState('');
@@ -43,6 +43,8 @@ const BannerManage = () => {
     };
 
     async function getBannerData() {
+        const accessToken = localStorage.getItem("accessToken");
+        const adminId = localStorage.getItem("adminId");
         try {
             const getRes = await axios.get(`${backendUrl}/slider`, {
                 headers: {
@@ -59,10 +61,13 @@ const BannerManage = () => {
             console.error(error);
             toast.error("Lỗi khi lấy danh sách banner");
             toast.error(error.response.data.message[0]);
+            RenewToken();
         }
     }
 
     async function createBanner() {
+        const accessToken = localStorage.getItem("accessToken");
+        const adminId = localStorage.getItem("adminId");
         try {
             const createRes = await axios.post(`${backendUrl}/slider`, { title, url, image: imgUrl, adminId }, {
                 headers: {
@@ -77,10 +82,13 @@ const BannerManage = () => {
             console.error(error);
             toast.error("Lỗi khi tạo banner mới");
             toast.error(error.response.data.message[0]);
+            RenewToken();
         }
     }
 
     async function updateBanner() {
+        const accessToken = localStorage.getItem("accessToken");
+        const adminId = localStorage.getItem("adminId");
         try {
             if (!originalData) return;
 
@@ -109,10 +117,13 @@ const BannerManage = () => {
             console.error(error);
             toast.error("Lỗi khi cập nhật banner");
             toast.error(error.response.data.message);
+            RenewToken();
         }
     }
 
     async function deleteBanner(id) {
+        const accessToken = localStorage.getItem("accessToken");
+        const adminId = localStorage.getItem("adminId");
         try {
             const delRes = await axios.delete(`${backendUrl}/slider/${id}`, {
                 headers: {
@@ -127,6 +138,7 @@ const BannerManage = () => {
             console.error(error);
             toast.error("Lỗi khi xóa banner");
             toast.error(error.response.data.message[0]);
+            RenewToken();
         }
     }
 

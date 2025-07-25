@@ -3,9 +3,8 @@ import "../style/pr.css"
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
-const ProductManage = () => {
+const ProductManage = ({ RenewToken }) => {
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
-    const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVlYWQ5ZTdjLTRlODctNDMzOS1iMGEwLTAzNTE5YzM4MGM3YiIsIm5hbWUiOiJBZG1pbiAxIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUzMzY4NzkzLCJleHAiOjE3NTM2Mjc5OTN9.JZTK1GxN0xhKy3L3ArmY1E1V6JhSJY9F9ZzKX-cUq0o"
 
     const [allData, setAllData] = useState([]);
     const [findName, setFindName] = useState('');
@@ -48,6 +47,7 @@ const ProductManage = () => {
 
 
     async function getProductData() {
+        const accessToken = localStorage.getItem("accessToken");
         try {
             const getRes = await axios.get(`${backendUrl}/product`, {
                 headers: {
@@ -71,11 +71,13 @@ const ProductManage = () => {
         } catch (error) {
             console.error(error);
             toast.error("Lỗi khi lấy danh sách sản phẩm");
-            toast.error(error.response.data.message[0]);
+            toast.error(error.response.data.message);
+            RenewToken();
         }
     }
 
     async function createProduct() {
+        const accessToken = localStorage.getItem("accessToken");
         try {
             const createRes = await axios.post(`${backendUrl}/product`, { name, price: Number(price), image: imgUrl, stock: Number(sale), description: desc, storage: Number(storage), categoryId: cateId }, {
                 headers: {
@@ -89,11 +91,13 @@ const ProductManage = () => {
         } catch (error) {
             console.error(error);
             toast.error("Lỗi khi tạo sản phẩm mới");
-            toast.error(error.response.data.message[0]);
+            toast.error(error.response.data.message);
+            RenewToken();
         }
     }
 
     async function deleteProduct(id) {
+        const accessToken = localStorage.getItem("accessToken");
         try {
             const delRes = await axios.delete(`${backendUrl}/product/${id}`, {
                 headers: {
@@ -107,11 +111,13 @@ const ProductManage = () => {
         } catch (error) {
             console.error(error);
             toast.error("Lỗi khi xóa sản phẩm");
-            toast.error(error.response.data.message[0]);
+            toast.error(error.response.data.message);
+            RenewToken();
         }
     }
 
     async function updateProduct() {
+        const accessToken = localStorage.getItem("accessToken");
         try {
             if (!originalData) return;
 
@@ -135,7 +141,8 @@ const ProductManage = () => {
         } catch (error) {
             console.error(error);
             toast.error("Lỗi khi cập nhật sản phẩm");
-            toast.error(error.response.data.message[0]);
+            toast.error(error.response.data.message);
+            RenewToken();
         }
     }
 
@@ -181,7 +188,9 @@ const ProductManage = () => {
                                             <td>{product.name}</td>
                                             <td>{product.description}</td>
                                             <td>
-                                                <div className='pr-img' style={{ backgroundImage: `url(${product.image})` }}></div>
+                                                <div className='pr-img' style={{ backgroundImage: `url(${product.image})` }}
+                                                    onClick={() => window.open(product.image, '_blank')}>
+                                                </div>
                                             </td>
                                             <td>{product.price}</td>
                                             <td>{product.category.name}</td>

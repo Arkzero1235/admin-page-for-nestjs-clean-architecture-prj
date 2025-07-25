@@ -3,9 +3,8 @@ import "../style/ca.css"
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
-const CategoryManage = () => {
+const CategoryManage = ({ RenewToken }) => {
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
-    const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVlYWQ5ZTdjLTRlODctNDMzOS1iMGEwLTAzNTE5YzM4MGM3YiIsIm5hbWUiOiJBZG1pbiAxIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUzMzY4NzkzLCJleHAiOjE3NTM2Mjc5OTN9.JZTK1GxN0xhKy3L3ArmY1E1V6JhSJY9F9ZzKX-cUq0o"
 
     const [allData, setAllData] = useState([]);
     const [findName, setFindName] = useState('');
@@ -29,6 +28,7 @@ const CategoryManage = () => {
     };
 
     async function getCategoryData() {
+        const accessToken = localStorage.getItem("accessToken");
         try {
             const getCategoriesRes = await axios.get(`${backendUrl}/category`, {
                 headers: {
@@ -44,11 +44,13 @@ const CategoryManage = () => {
         } catch (error) {
             console.error(error);
             toast.error("Lỗi khi lấy danh sách danh mục");
-            toast.error(error.response.data.message[0]);
+            toast.error(error.response.data.message);
+            RenewToken();
         }
     }
 
     async function updateCate() {
+        const accessToken = localStorage.getItem("accessToken");
         try {
             const updateRes = await axios.patch(`${backendUrl}/category/${id}`, { name }, {
                 headers: {
@@ -62,11 +64,13 @@ const CategoryManage = () => {
         } catch (error) {
             console.error(error);
             toast.error("Lỗi khi cập nhật danh mục");
-            toast.error(error.response.data.message[0]);
+            toast.error(error.response.data.message);
+            RenewToken();
         }
     }
 
     async function createCate() {
+        const accessToken = localStorage.getItem("accessToken");
         try {
             const createRes = await axios.post(`${backendUrl}/category`, { name }, {
                 headers: {
@@ -80,11 +84,13 @@ const CategoryManage = () => {
         } catch (error) {
             console.error(error);
             toast.error("Lỗi khi tạo danh mục");
-            toast.error(error.response.data.message[0]);
+            toast.error(error.response.data.message);
+            RenewToken();
         }
     }
 
     async function deleteCate(id) {
+        const accessToken = localStorage.getItem("accessToken");
         try {
             const delRes = await axios.delete(`${backendUrl}/category/${id}`, {
                 headers: {
@@ -98,7 +104,8 @@ const CategoryManage = () => {
         } catch (error) {
             console.error(error);
             toast.error("Lỗi khi xóa danh mục");
-            toast.error(error.response.data.message[0]);
+            toast.error(error.response.data.message);
+            RenewToken();
         }
     }
 
