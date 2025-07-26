@@ -50,8 +50,7 @@ const CustomerManage = ({ RenewToken }) => {
             setChangeCount(prev => prev + 1);
         } catch (error) {
             console.error(error);
-            toast.error("Lỗi khi cập nhật người dùng");
-            toast.error(error.response.data.message);
+            toast.error(error.response.data.message || "Lỗi khi cập nhật người dùng");
             RenewToken();
         }
     }
@@ -70,8 +69,7 @@ const CustomerManage = ({ RenewToken }) => {
             getUsersData()
         } catch (error) {
             console.error(error);
-            toast.error("Lỗi khi xóa người dùng");
-            toast.error(error.response.data.message);
+            toast.error(error.response.data.message || "Lỗi khi xóa người dùng");
             RenewToken();
         }
     }
@@ -92,8 +90,7 @@ const CustomerManage = ({ RenewToken }) => {
             setFoundData(getUsersRes.data.data)
         } catch (error) {
             console.error(error);
-            toast.error("Lỗi khi lấy danh sách người dùng");
-            toast.error(error.response.data.message);
+            toast.error(error.response.data.message || "Lỗi khi lấy danh sách người dùng");
             RenewToken();
         }
     }

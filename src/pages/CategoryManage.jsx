@@ -43,8 +43,7 @@ const CategoryManage = ({ RenewToken }) => {
             setFoundData(getCategoriesRes.data.data)
         } catch (error) {
             console.error(error);
-            toast.error("Lỗi khi lấy danh sách danh mục");
-            toast.error(error.response.data.message);
+            toast.error(error.response.data.message || "Lỗi khi lấy danh sách danh mục");
             RenewToken();
         }
     }
@@ -63,8 +62,7 @@ const CategoryManage = ({ RenewToken }) => {
             getCategoryData()
         } catch (error) {
             console.error(error);
-            toast.error("Lỗi khi cập nhật danh mục");
-            toast.error(error.response.data.message);
+            toast.error(error.response.data.message || "Lỗi khi cập nhật danh mục");
             RenewToken();
         }
     }
@@ -83,8 +81,7 @@ const CategoryManage = ({ RenewToken }) => {
             getCategoryData()
         } catch (error) {
             console.error(error);
-            toast.error("Lỗi khi tạo danh mục");
-            toast.error(error.response.data.message);
+            toast.error(error.response.data.message || "Lỗi khi tạo mới danh mục");
             RenewToken();
         }
     }
@@ -103,8 +100,7 @@ const CategoryManage = ({ RenewToken }) => {
             getCategoryData()
         } catch (error) {
             console.error(error);
-            toast.error("Lỗi khi xóa danh mục");
-            toast.error(error.response.data.message);
+            toast.error(error.response.data.message || "Lỗi khi xóa danh mục");
             RenewToken();
         }
     }

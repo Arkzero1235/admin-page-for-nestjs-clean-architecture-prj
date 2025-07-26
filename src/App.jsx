@@ -118,7 +118,7 @@ function App() {
 
                 {choose === 1 && <CustomerManage RenewToken={RenewToken} />}
 
-                {choose === 2 && <CategoryManage RenewToken={RenewToken} />}
+                {choose === 2 && <CategoryManage RenewToken={RenewToken} HandleChoose={HandleChoose} />}
 
                 {choose === 3 && <ProductManage RenewToken={RenewToken} />}
 

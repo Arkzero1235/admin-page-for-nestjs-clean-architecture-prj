@@ -70,6 +70,10 @@ const DashBoard = ({ RenewToken, revenueData, sumData, HandleSetRevenue, HandleS
                     <h6>Số đơn hàng thành công: </h6>
                     <h1>{sumData.totalSuccessfulOrders}</h1>
                 </div>
+                <div className='block six'>
+                    <h6>Số đơn hàng đã hủy: </h6>
+                    <h1>{sumData.totalCancelledOrders}</h1>
+                </div>
             </div>
             <div className='re-chart-container'>
                 <ResponsiveContainer width="100%" height="100%">

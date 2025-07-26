@@ -39,3 +39,11 @@
     background-repeat: no-repeat;
     background-size: contain;
 }
+
+.sb-title {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}

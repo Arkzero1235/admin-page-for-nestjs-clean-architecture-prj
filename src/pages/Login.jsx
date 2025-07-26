@@ -10,7 +10,8 @@ const Login = ({ HandleLogin }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    async function login() {
+    async function login(e) {
+        e.preventDefault();
         try {
             const loginRes = await axios.post(`${backendUrl}/auth/admin`, { email, password }, {
                 withCredentials: true
@@ -32,8 +33,7 @@ const Login = ({ HandleLogin }) => {
 
         } catch (error) {
             console.error(error);
-            toast.error("Lỗi khi đăng nhập");
-            toast.error(error.response.data.message);
+            toast.error(error.response.data.message || "Lỗi khi đăng nhập");
         }
     }
 
@@ -46,15 +46,15 @@ const Login = ({ HandleLogin }) => {
                 </div>
 
                 <div className='input-workplace'>
+                    <form onSubmit={e => login(e)}>
+                        <label htmlFor="">Email</label>
+                        <input type="text" autoComplete="current-email" placeholder='Nhập email' value={email} onChange={e => setEmail(e.target.value)} />
 
-                    <label htmlFor="">Email</label>
-                    <input type="text" placeholder='Nhập email' value={email} onChange={e => setEmail(e.target.value)} />
+                        <label htmlFor="">Password</label>
+                        <input type="password" autoComplete="current-password" placeholder='Nhập mật khẩu' value={password} onChange={e => setPassword(e.target.value)} />
 
-                    <label htmlFor="">Password</label>
-                    <input type="password" placeholder='Nhập mật khẩu' value={password} onChange={e => setPassword(e.target.value)} />
-
-                    <button className='login-btn' onClick={login}>Đăng nhập</button>
-
+                        <button type='submit' className='login-btn'>Đăng nhập</button>
+                    </form>
                 </div>
 
             </div>

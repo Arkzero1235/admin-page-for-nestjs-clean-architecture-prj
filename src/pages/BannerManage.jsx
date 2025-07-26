@@ -59,8 +59,7 @@ const BannerManage = ({ RenewToken }) => {
             setFoundData(getRes.data.data)
         } catch (error) {
             console.error(error);
-            toast.error("Lỗi khi lấy danh sách banner");
-            toast.error(error.response.data.message[0]);
+            toast.error(error.response.data.message[0] || "Lỗi khi lấy danh sách banner");
             RenewToken();
         }
     }
@@ -80,8 +79,7 @@ const BannerManage = ({ RenewToken }) => {
             getBannerData()
         } catch (error) {
             console.error(error);
-            toast.error("Lỗi khi tạo banner mới");
-            toast.error(error.response.data.message[0]);
+            toast.error(error.response.data.message || "Lỗi khi tạo mới banner");
             RenewToken();
         }
     }
@@ -115,8 +113,7 @@ const BannerManage = ({ RenewToken }) => {
             getBannerData()
         } catch (error) {
             console.error(error);
-            toast.error("Lỗi khi cập nhật banner");
-            toast.error(error.response.data.message);
+            toast.error(error.response.data.message || "Lỗi khi cập nhật banner");
             RenewToken();
         }
     }
@@ -136,8 +133,7 @@ const BannerManage = ({ RenewToken }) => {
             getBannerData()
         } catch (error) {
             console.error(error);
-            toast.error("Lỗi khi xóa banner");
-            toast.error(error.response.data.message[0]);
+            toast.error(error.response.data.message || "Lỗi khi xóa banner");
             RenewToken();
         }
     }
@@ -163,7 +159,7 @@ const BannerManage = ({ RenewToken }) => {
                 </div>
 
                 <div className="ca-list mt-4">
-                    <table className="table table-striped table-bordered table-hover my-table">
+                    <table className="table table-bordered my-table">
                         <thead className="table-dark">
                             <tr>
                                 <th>#</th>
@@ -181,7 +177,9 @@ const BannerManage = ({ RenewToken }) => {
                                             <td>{index++}</td>
                                             <td>{banner.title}</td>
                                             <td>
-                                                <div className='pr-img' style={{ backgroundImage: `url(${banner.image})`, height: '100px' }}></div>
+                                                <div className='pr-img' style={{ backgroundImage: `url(${banner.image})`, height: '100px' }}
+                                                    onClick={() => window.open(banner.image, '_blank')}
+                                                ></div>
                                             </td>
                                             <td>{banner.url}</td>
                                             <td>

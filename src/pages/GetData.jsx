@@ -32,7 +32,6 @@ const GetData = ({ HandleSetRevenue, HandleSetSumData, RenewToken }) => {
 
             } catch (error) {
                 console.error(error);
-                toast.error("Lỗi khi lấy dữ liệu doanh thu");
                 toast.error(error.response.data.message);
                 RenewToken();
             }

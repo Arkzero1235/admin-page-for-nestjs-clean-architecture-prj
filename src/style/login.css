@@ -34,6 +34,11 @@
 .input-workplace {
     width: 70%;
     height: 80%;
+}
+
+.input-workplace>form {
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -41,7 +46,7 @@
     padding: 20px;
 }
 
-.input-workplace>input {
+.input-workplace>form>input {
     all: unset;
     padding: 10px 10px;
     width: 100%;

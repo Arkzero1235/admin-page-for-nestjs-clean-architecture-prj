@@ -21,7 +21,6 @@ const HorizonalNavBar = ({ title, HandleLogin }) => {
 
         } catch (error) {
             console.error(error);
-            toast.error("Lỗi khi đăng xuất");
             toast.error(error.response.data.message);
         }
     }

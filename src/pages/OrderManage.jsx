@@ -30,8 +30,7 @@ const OrderManage = ({ RenewToken }) => {
 
         } catch (error) {
             console.error(error);
-            toast.error("Lỗi khi lấy danh sách đơn hàng");
-            toast.error(error.response.data.message[0]);
+            toast.error(error.response.data.message[0] || "Lỗi khi lấy danh sách đơn hàng");
             RenewToken();
         }
     }
@@ -50,8 +49,7 @@ const OrderManage = ({ RenewToken }) => {
 
         } catch (error) {
             console.error(error);
-            toast.error("Lỗi khi xác nhận đơn hàng");
-            toast.error(error.response.data.message);
+            toast.error(error.response.data.message || "Lỗi khi xác nhận đơn hàng");
             RenewToken();
         }
     }
@@ -69,8 +67,7 @@ const OrderManage = ({ RenewToken }) => {
 
         } catch (error) {
             console.error(error);
-            toast.error("Lỗi khi hủy đơn hàng");
-            toast.error(error.response.data.message);
+            toast.error(error.response.data.message || "Lỗi khi hủy đơn hàng");
             RenewToken();
         }
     }

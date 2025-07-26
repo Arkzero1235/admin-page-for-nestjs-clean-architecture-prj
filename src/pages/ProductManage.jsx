@@ -21,6 +21,8 @@ const ProductManage = ({ RenewToken }) => {
     const [storage, setStorage] = useState(0);
     const [originalData, setOriginalData] = useState(null);
 
+    const [findCateId, setFindCateId] = useState('');
+
     const [showModal, setShowModal] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
 
@@ -45,7 +47,6 @@ const ProductManage = ({ RenewToken }) => {
         setFoundData(result);
     };
 
-
     async function getProductData() {
         const accessToken = localStorage.getItem("accessToken");
         try {
@@ -61,6 +62,8 @@ const ProductManage = ({ RenewToken }) => {
                 }
             })
 
+            // console.log(getRes.data.data);
+
             toast.success("Lấy danh sách sản phẩm thành công")
 
             setAllData(getRes.data.data)
@@ -70,14 +73,19 @@ const ProductManage = ({ RenewToken }) => {
             setCategoryData(getCategoriesRes.data.data)
         } catch (error) {
             console.error(error);
-            toast.error("Lỗi khi lấy danh sách sản phẩm");
-            toast.error(error.response.data.message);
+            toast.error(error.response.data.message || "Lỗi khi lấy danh sách sản phẩm");
             RenewToken();
         }
     }
 
     async function createProduct() {
         const accessToken = localStorage.getItem("accessToken");
+
+        if (!cateId) {
+            toast.error("Bạn phải chọn 1 danh mục cho sản phẩm này");
+            return;
+        }
+
         try {
             const createRes = await axios.post(`${backendUrl}/product`, { name, price: Number(price), image: imgUrl, stock: Number(sale), description: desc, storage: Number(storage), categoryId: cateId }, {
                 headers: {
@@ -90,8 +98,7 @@ const ProductManage = ({ RenewToken }) => {
             getProductData()
         } catch (error) {
             console.error(error);
-            toast.error("Lỗi khi tạo sản phẩm mới");
-            toast.error(error.response.data.message);
+            toast.error(error.response.data.message || "Lỗi khi tạo mới sản phẩm");
             RenewToken();
         }
     }
@@ -110,8 +117,7 @@ const ProductManage = ({ RenewToken }) => {
             getProductData()
         } catch (error) {
             console.error(error);
-            toast.error("Lỗi khi xóa sản phẩm");
-            toast.error(error.response.data.message);
+            toast.error(error.response.data.message || "Lỗi khi xóa sản phẩm");
             RenewToken();
         }
     }
@@ -140,8 +146,7 @@ const ProductManage = ({ RenewToken }) => {
             getProductData()
         } catch (error) {
             console.error(error);
-            toast.error("Lỗi khi cập nhật sản phẩm");
-            toast.error(error.response.data.message);
+            toast.error(error.response.data.message || "Lỗi khi cập nhật sản phẩm");
             RenewToken();
         }
     }
@@ -152,22 +157,58 @@ const ProductManage = ({ RenewToken }) => {
 
     }, [])
 
+    useEffect(() => {
+        const findByCategory = () => {
+            const result = allData.filter(product => product.categoryId === findCateId);
+            setFoundData(result);
+        };
+
+        findByCategory()
+
+    }, [findCateId])
+
+    useEffect(() => {
+        if (!findCateId) {
+            setFoundData(allData);
+        } else {
+            const result = allData.filter(product => product.categoryId === findCateId);
+            setFoundData(result);
+        }
+    }, [findCateId])
+
     return (
         <div className='pr-container'>
             <div className='pr-header'>Quản Lý Sản Phẩm</div>
 
             <div className='pr-workplace'>
                 <div className='search-bar'>
-                    <h6>Danh sách sản phẩm</h6>
+                    <div className='sb-title'>
+                        <h6>Danh sách sản phẩm</h6>
+                        <select
+                            id="category"
+                            value={findCateId}
+                            onChange={(e) => setFindCateId(e.target.value)}
+                            style={{ padding: '10px 10px' }}
+                        >
+                            <option value="">Tất cả danh mục</option>
+                            {categoryData.map((cat) => (
+                                <option key={cat.id} value={cat.id}>
+                                    {cat.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                     <div className='search'>
                         <button style={{ borderRadius: "5px", backgroundColor: "#FDD60D" }} onClick={openModal2}>Thêm sản phẩm</button>
+
                         <input type="text" placeholder='Nhập sản phẩm cần tìm' value={findName} onChange={e => setFindName(e.target.value)} />
+
                         <button onClick={findByName}>Tìm</button>
                     </div>
                 </div>
 
                 <div className="pr-list mt-4">
-                    <table className="table table-striped table-bordered table-hover my-table">
+                    <table className="table table-bordered my-table">
                         <thead className="table-dark">
                             <tr>
                                 <th>#</th>
@@ -199,7 +240,7 @@ const ProductManage = ({ RenewToken }) => {
                                                     <button onClick={
                                                         () => {
                                                             openModal();
-                                                            setUpdateData(product)
+                                                            setUpdateData(product);
                                                         }
                                                     }>Chỉnh sửa</button>
                                                     <button onClick={() => deleteProduct(product.id)}>Xóa</button>

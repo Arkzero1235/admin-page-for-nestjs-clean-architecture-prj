@@ -40,8 +40,7 @@ const StorageManage = ({ RenewToken }) => {
             setFoundData(getRes.data.data)
         } catch (error) {
             console.error(error);
-            toast.error("Lỗi khi lấy danh sách sản phẩm");
-            toast.error(error.response.data.message[0]);
+            toast.error(error.response.data.message || "Lỗi khi lấy danh sách sản phẩm");
             RenewToken();
         }
     }
@@ -64,8 +63,7 @@ const StorageManage = ({ RenewToken }) => {
             getProductData()
         } catch (error) {
             console.error(error);
-            toast.error("Lỗi khi cập nhật kho hàng");
-            toast.error(error.response.data.message[0]);
+            toast.error(error.response.data.message || "Lỗi khi cập nhật kho hàng sản phẩm");
             RenewToken();
         }
     }
