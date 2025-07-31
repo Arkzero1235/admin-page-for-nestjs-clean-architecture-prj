@@ -19,8 +19,6 @@ const Login = ({ HandleLogin }) => {
 
             toast.success("Đăng nhập thành công")
 
-            // console.log(loginRes.data.data);
-
             localStorage.setItem('accessToken', loginRes.data.data.token);
 
             localStorage.setItem('adminId', loginRes.data.data.sub);

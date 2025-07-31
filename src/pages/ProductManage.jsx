@@ -235,7 +235,7 @@ const ProductManage = ({ RenewToken }) => {
                                             </td>
                                             <td>{product.price}</td>
                                             <td>{product.category.name}</td>
-                                            <td>
+                                            <td style={{ width: '150px' }}>
                                                 <div className='option'>
                                                     <button onClick={
                                                         () => {

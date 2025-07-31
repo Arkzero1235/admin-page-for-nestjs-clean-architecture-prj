@@ -13,6 +13,28 @@ const OrderManage = ({ RenewToken }) => {
     const [userId, setUserId] = useState('');
     const [orderId, setOrderId] = useState('');
 
+    async function getAllOrderData() {
+        const accessToken = localStorage.getItem("accessToken");
+        try {
+            const getRes = await axios.get(`${backendUrl}/order`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                }
+            })
+
+            toast.success("Lấy danh sách đơn hàng thành công")
+
+            setAllData(getRes.data.data)
+
+            // console.log(getRes.data.data);
+
+        } catch (error) {
+            console.error(error);
+            toast.error(error.response.data.message[0] || "Lỗi khi lấy danh sách đơn hàng");
+            RenewToken();
+        }
+    }
+
     async function getOrderData() {
         const accessToken = localStorage.getItem("accessToken");
         try {
@@ -26,7 +48,7 @@ const OrderManage = ({ RenewToken }) => {
 
             setAllData(getRes.data.data)
 
-            console.log(getRes.data.data);
+            // console.log(getRes.data.data);
 
         } catch (error) {
             console.error(error);
@@ -39,14 +61,15 @@ const OrderManage = ({ RenewToken }) => {
         const accessToken = localStorage.getItem("accessToken");
 
         try {
-            const submitRes = await axios.patch(`${backendUrl}/order/${orderId}`, {}, {
+            const submitRes = await axios.patch(`${backendUrl}/order/delivery/${orderId}`, {}, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 }
             })
 
-            toast.success("Xác nhận giao đơn hàng thành công")
+            toast.success("Xác nhận đơn hàng thành công")
 
+            getAllOrderData()
         } catch (error) {
             console.error(error);
             toast.error(error.response.data.message || "Lỗi khi xác nhận đơn hàng");
@@ -57,7 +80,7 @@ const OrderManage = ({ RenewToken }) => {
     async function cancelOrder() {
         const accessToken = localStorage.getItem("accessToken");
         try {
-            const submitRes = await axios.delete(`${backendUrl}/order/${userId}/${orderId}`, {
+            const submitRes = await axios.delete(`${backendUrl}/order/${orderId}`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 }
@@ -65,12 +88,17 @@ const OrderManage = ({ RenewToken }) => {
 
             toast.success("Hủy giao đơn hàng thành công")
 
+            getAllOrderData()
         } catch (error) {
             console.error(error);
             toast.error(error.response.data.message || "Lỗi khi hủy đơn hàng");
             RenewToken();
         }
     }
+
+    useEffect(() => {
+        getAllOrderData()
+    }, [])
 
     return (
         <div className='ca-container'>
@@ -103,15 +131,21 @@ const OrderManage = ({ RenewToken }) => {
 
                                             <div className='order-option'>
 
-                                                <button onClick={() => {
-                                                    setOrderId(order.id);
-                                                    submitOrder();
-                                                }}>Giao thành công</button>
+                                                {
+                                                    order.status === "IN PROCESS" &&
+                                                    <button onClick={() => {
+                                                        setOrderId(order.id);
+                                                        submitOrder();
+                                                    }}>Xác nhận đơn hàng</button>
+                                                }
 
-                                                <button onClick={() => {
-                                                    setOrderId(order.id);
-                                                    cancelOrder();
-                                                }}>Hủy đơn hàng</button>
+                                                {
+                                                    order.status !== "PENDING" && order.status !== "CANCEL" && order.status !== "SUCCESS" &&
+                                                    <button onClick={() => {
+                                                        setOrderId(order.id);
+                                                        cancelOrder();
+                                                    }}>Hủy đơn hàng</button>
+                                                }
 
                                             </div>
 

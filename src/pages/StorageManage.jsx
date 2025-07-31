@@ -5,7 +5,6 @@ import { toast } from 'react-toastify'
 
 const StorageManage = ({ RenewToken }) => {
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
-    const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVlYWQ5ZTdjLTRlODctNDMzOS1iMGEwLTAzNTE5YzM4MGM3YiIsIm5hbWUiOiJBZG1pbiAxIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUzMzY4NzkzLCJleHAiOjE3NTM2Mjc5OTN9.JZTK1GxN0xhKy3L3ArmY1E1V6JhSJY9F9ZzKX-cUq0o"
 
     const [allData, setAllData] = useState([]);
     const [findName, setFindName] = useState('');
@@ -26,6 +25,7 @@ const StorageManage = ({ RenewToken }) => {
     };
 
     async function getProductData() {
+        const accessToken = localStorage.getItem("accessToken");
         try {
             const getRes = await axios.get(`${backendUrl}/product`, {
                 headers: {
@@ -38,6 +38,7 @@ const StorageManage = ({ RenewToken }) => {
             setAllData(getRes.data.data)
 
             setFoundData(getRes.data.data)
+
         } catch (error) {
             console.error(error);
             toast.error(error.response.data.message || "Lỗi khi lấy danh sách sản phẩm");
